@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id                   String   @id @default(uuid())
+  email                String   @unique
+  password             String
+  nombre               String
+  apellido             String
+  rol                  String   // SOLICITANTE | JEFE_TURNO | JEFE_AREA | GERENTE | AUDITOR | ADMIN
+  area                 String   // OPERACIONES | MANTENIMIENTO | PROCESOS | SEGURIDAD | ADMIN
+  activo               Boolean  @default(true)
+  notificacionesEmail  Boolean  @default(true)
+  creadoEn             DateTime @default(now())
+  ultimoAcceso         DateTime?
+
+  puentesCreados       Puente[]      @relation("PuenteCreador")
+  aprobaciones         Aprobacion[]
+  auditoriasRealizadas Auditoria[]
+  logsAuditoria        LogAuditoria[]
+  notificaciones       Notificacion[]
+
+  @@map("usuarios")
+}
+
+model Puente {
+  id                  String    @id @default(uuid())
+  numeroRegistro      String    @unique
+  tipo                String    // OPERATIVO | MANTENIMIENTO
+  elementoAForzar     String
+  equipo              String
+  necesidadMotivo     String
+  descripcionDetallada String?
+  estado              String    @default("BORRADOR")
+  // BORRADOR | PENDIENTE_NIVEL_1 | APROBADO_NIVEL_1 | PENDIENTE_NIVEL_2 |
+  // APROBADO_NIVEL_2 | PENDIENTE_NIVEL_3 | APROBADO_NIVEL_3 |
+  // EVALUACION_MODIFICACION | CERRADO | RECHAZADO
+
+  // Análisis de riesgos
+  riesgosIdentificados  String?
+  escenariosEmergencia  String?   // JSON array string
+  variablesControl      String?
+  valoresMaxMin         String?   // JSON object string
+  medidasContencion     String?
+
+  // Auditoría
+  creadoPorId     String
+  creadoPor       Usuario   @relation("PuenteCreador", fields: [creadoPorId], references: [id])
+  creadoEn        DateTime  @default(now())
+  modificadoEn    DateTime  @updatedAt
+  ejecutadoEn     DateTime?
+  cerradoEn       DateTime?
+
+  // Control
+  proximaRenovacion  DateTime?
+  activo             Boolean   @default(true)
+
+  aprobaciones       Aprobacion[]
+  controles          ControlPeriodico[]
+  notificaciones     Notificacion[]
+  pdfUrl             String?
+  observaciones      String?
+
+  @@map("puentes")
+}
+
+model Aprobacion {
+  id           String    @id @default(uuid())
+  puenteId     String
+  puente       Puente    @relation(fields: [puenteId], references: [id])
+  aprobadorId  String
+  aprobador    Usuario   @relation(fields: [aprobadorId], references: [id])
+  nivel        Int       // 1 | 2 | 3
+  estado       String    // APROBADO | RECHAZADO | PENDIENTE
+  fecha        DateTime  @default(now())
+  comentarios  String?
+  firmaDigital String?
+
+  @@map("aprobaciones")
+}
+
+model ControlPeriodico {
+  id             String   @id @default(uuid())
+  puenteId       String
+  puente         Puente   @relation(fields: [puenteId], references: [id])
+  supervisorId   String
+  fecha          DateTime @default(now())
+  observaciones  String?
+  sigueSiendoNecesario Boolean @default(true)
+
+  @@map("controles_periodicos")
+}
+
+model Notificacion {
+  id        String   @id @default(uuid())
+  usuarioId String
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  puenteId  String?
+  puente    Puente?  @relation(fields: [puenteId], references: [id])
+  tipo      String   // NUEVO_PUENTE | APROBADO | RECHAZADO | POR_EXPIRAR | EXPIRADO | CERRADO | RENOVACION
+  titulo    String
+  mensaje   String
+  leida     Boolean  @default(false)
+  creadoEn  DateTime @default(now())
+
+  @@map("notificaciones")
+}
+
+model Auditoria {
+  id                 String   @id @default(uuid())
+  tipoAuditoria      String   // TRIMESTRAL | MANUAL
+  fechaRealizacion   DateTime @default(now())
+  realizadoPorId     String
+  realizadoPor       Usuario  @relation(fields: [realizadoPorId], references: [id])
+  puentesRevisados   String   // JSON array of IDs
+  puentesEncontrados Int
+  estadoCumplimiento String   // CUMPLE | NO_CUMPLE | PARCIAL
+  observaciones      String?
+  pdfReporte         String?
+
+  @@map("auditorias")
+}
+
+model LogAuditoria {
+  id             String   @id @default(uuid())
+  usuarioId      String?
+  usuario        Usuario? @relation(fields: [usuarioId], references: [id])
+  accion         String
+  tablaAfectada  String?
+  registroId     String?
+  cambios        String?
+  timestamp      DateTime @default(now())
+  ipAddress      String?
+  userAgent      String?
+
+  @@map("logs_auditoria")
+}

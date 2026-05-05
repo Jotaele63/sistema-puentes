@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Build outputs
+dist/
+backend/public/
+frontend/dist/
+
+# Environment variables (NEVER subir al repo)
+.env
+.env.local
+.env.production
+backend/.env
+
+# Database (solo local)
+*.db
+*.db-journal
+backend/prisma/dev.db
+backend/prisma/*.db
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Uploads
+backend/uploads/

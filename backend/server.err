@@ -1,0 +1,54 @@
+PrismaClientKnownRequestError: 
+Invalid `prisma.logAuditoria.create()` invocation in
+C:\Users\jfarrugg\Desktop\Proyectos-IA\puentes\backend\src\controllers\auth.controller.ts:23:29
+
+  20   return;
+  21 }
+  22 await prisma.usuario.update({ where: { id: user.id }, data: { ultimoAcceso: new Date() } });
+→ 23 await prisma.logAuditoria.create(
+Foreign key constraint violated: `foreign key`
+    at $n.handleRequestError (C:\Users\jfarrugg\Desktop\Proyectos-IA\puentes\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (C:\Users\jfarrugg\Desktop\Proyectos-IA\puentes\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Users\jfarrugg\Desktop\Proyectos-IA\puentes\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Users\jfarrugg\Desktop\Proyectos-IA\puentes\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async login (C:\Users\jfarrugg\Desktop\Proyectos-IA\puentes\backend\src\controllers\auth.controller.ts:23:3) {
+  code: 'P2003',
+  clientVersion: '5.22.0',
+  meta: { modelName: 'LogAuditoria', field_name: 'foreign key' }
+}
+PrismaClientKnownRequestError: 
+Invalid `prisma.logAuditoria.create()` invocation in
+C:\Users\jfarrugg\Desktop\Proyectos-IA\puentes\backend\src\controllers\auth.controller.ts:23:29
+
+  20   return;
+  21 }
+  22 await prisma.usuario.update({ where: { id: user.id }, data: { ultimoAcceso: new Date() } });
+→ 23 await prisma.logAuditoria.create(
+Foreign key constraint violated: `foreign key`
+    at $n.handleRequestError (C:\Users\jfarrugg\Desktop\Proyectos-IA\puentes\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (C:\Users\jfarrugg\Desktop\Proyectos-IA\puentes\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Users\jfarrugg\Desktop\Proyectos-IA\puentes\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Users\jfarrugg\Desktop\Proyectos-IA\puentes\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async login (C:\Users\jfarrugg\Desktop\Proyectos-IA\puentes\backend\src\controllers\auth.controller.ts:23:3) {
+  code: 'P2003',
+  clientVersion: '5.22.0',
+  meta: { modelName: 'LogAuditoria', field_name: 'foreign key' }
+}
+PrismaClientKnownRequestError: 
+Invalid `prisma.logAuditoria.create()` invocation in
+C:\Users\jfarrugg\Desktop\Proyectos-IA\puentes\backend\src\controllers\auth.controller.ts:23:29
+
+  20   return;
+  21 }
+  22 await prisma.usuario.update({ where: { id: user.id }, data: { ultimoAcceso: new Date() } });
+→ 23 await prisma.logAuditoria.create(
+Foreign key constraint violated: `foreign key`
+    at $n.handleRequestError (C:\Users\jfarrugg\Desktop\Proyectos-IA\puentes\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (C:\Users\jfarrugg\Desktop\Proyectos-IA\puentes\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Users\jfarrugg\Desktop\Proyectos-IA\puentes\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Users\jfarrugg\Desktop\Proyectos-IA\puentes\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async login (C:\Users\jfarrugg\Desktop\Proyectos-IA\puentes\backend\src\controllers\auth.controller.ts:23:3) {
+  code: 'P2003',
+  clientVersion: '5.22.0',
+  meta: { modelName: 'LogAuditoria', field_name: 'foreign key' }
+}
