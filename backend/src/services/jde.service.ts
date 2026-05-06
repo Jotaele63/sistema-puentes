@@ -4,7 +4,7 @@ const jdeConfig: sql.config = {
   server:   process.env.JDE_SERVER   || 'JDESQLPD.cuyonet.com',
   user:     process.env.JDE_USER     || 'PQCLECTURA',
   password: process.env.JDE_PASSWORD || 'PQCLECTURA',
-  database: process.env.JDE_DATABASE || undefined,
+  database: process.env.JDE_DATABASE || 'JDE_PRODUCTION',
   options: {
     encrypt: false,
     trustServerCertificate: true,
@@ -33,13 +33,13 @@ export async function validarEquipoJDE(equipoId: string): Promise<EquipoJDE> {
   try {
     const db = await getPool();
     const result = await db.request()
-      .input('id', sql.VarChar(50), equipoId.trim())
+      .input('id', sql.NVarChar(50), equipoId.trim())
       .query(`
         SELECT TOP 1
-          RTRIM(APID)   AS APID,
-          RTRIM(APDL01) AS DESCRIPCION
-        FROM F1201
-        WHERE RTRIM(APID) = @id
+          RTRIM(FAAPID) AS APID,
+          RTRIM(FADL01) AS DESCRIPCION
+        FROM PRODDTA.F1201
+        WHERE RTRIM(FAAPID) = @id
       `);
 
     if (result.recordset.length > 0) {
